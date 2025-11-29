@@ -1,13 +1,17 @@
-import json
+import pytest
 from app.main import app
 
-def test_list_users():
-    client = app.test_client()
+@pytest.fixture
+def client():
+    app.testing = True
+    return app.test_client()
+
+def test_list_users(client):
     response = client.get('/users')
     assert response.status_code == 200
 
-def test_create_user():
-    client = app.test_client()
-    payload = {"name": "Teste", "email": "teste@email.com"}
-    response = client.post('/users', data=json.dumps(payload), content_type='application/json')
+def test_create_user(client):
+    response = client.post('/users', json={"name": "Test User", "email": "test@example.com"})
     assert response.status_code == 201
+    data = response.get_json()
+    assert "id" in data
