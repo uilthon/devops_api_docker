@@ -9,6 +9,10 @@ jobs:
   test-build-push:
     runs-on: ubuntu-latest
 
+    defaults:
+      run:
+        working-directory: ./
+
     steps:
       - name: Checkout do codigo
         uses: actions/checkout@v3
